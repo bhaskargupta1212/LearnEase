@@ -4,14 +4,26 @@ import { useState } from "react";
 import AuthLayout from "./AuthLayout";
 import Link from "next/link";
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
+
 export default function ForgotPassword() {
   const [email, setEmail] = useState("");
+  const [msg, setMsg] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // 🔌 Replace with API later
-    console.log("Reset Password Email:", email);
+    const res = await fetch(`${API_URL}/auth/forgot-password`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email }),
+    });
+
+    const data = await res.json();
+    setMsg(data.message);
+
+    // ⏱ message only 10 sec
+    setTimeout(() => setMsg(""), 10000);
   };
 
   return (
@@ -31,6 +43,8 @@ export default function ForgotPassword() {
           />
           <label>Email address</label>
         </div>
+
+        {msg && <p className="text-center text-success">{msg}</p>}
 
         <button type="submit" className="btn btn-login w-100 my-3">
           Send Reset Link
