@@ -2,13 +2,15 @@
 
 import { useDashboard } from "@/context/DashboardContext";
 
-export default function DashboardPage() {
+export default function ProfilePage() {
   const { user } = useDashboard();
 
   return (
     <>
-      <h2>Welcome, {user.name}</h2>
+      <h2>My Profile</h2>
+      <p>Name: {user.name}</p>
       <p>Role: {user.role}</p>
+      <p>Email: {user.email}</p>
     </>
   );
 }

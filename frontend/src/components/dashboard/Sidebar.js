@@ -41,13 +41,13 @@ export default function Sidebar({ user }) {
           </li>
 
           <li>
-            <Link href="/profile" className={isActive("/profile")} onClick={closeSidebar}>
+            <Link href="/dashboard/profile" className={isActive("/dashboard/profile")} onClick={closeSidebar}>
               My Profile
             </Link>
           </li>
 
           <li>
-            <Link href="/courses" className={isActive("/courses")} onClick={closeSidebar}>
+            <Link href="/dashboard/courses" className={isActive("/dashboard/courses")} onClick={closeSidebar}>
               Courses
             </Link>
           </li>
@@ -56,7 +56,7 @@ export default function Sidebar({ user }) {
         <div className="sidebar-footer">
           <p className="mb-1"><i className="bi bi-person-circle me-2"></i> {user?.name}</p>
 
-          {/* 🔴 Logout stays red */}
+          {/* Logout stays red */}
           <button onClick={logout} className="btn btn-danger w-100">
             Logout
           </button>
