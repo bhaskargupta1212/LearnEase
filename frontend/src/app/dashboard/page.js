@@ -2,7 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { authFetch, logout } from "@/utils/auth";
+import { authFetch } from "@/utils/auth";
+import Sidebar from "@/components/dashboard/Sidebar";
 
 export default function Dashboard() {
   const router = useRouter();
@@ -25,18 +26,16 @@ export default function Dashboard() {
     loadDashboard();
   }, [router]);
 
-  if (loading) return <h1 className="text-center mt-5">Loading...</h1>;
+  if (loading) return <h3 className="text-center mt-5">Loading...</h3>;
 
   return (
-    <div className="container mt-5">
-      <h2>Dashboard</h2>
-      <p>User Name: {user.name}</p>
-      <p>User ID: {user.id}</p>
-      <p>Role: {user.role}</p>
+    <div className="dashboard-layout">
+      <Sidebar user={user} />
 
-      <button onClick={logout} className="btn btn-danger">
-        Logout
-      </button>
+      <main className="dashboard-content">
+        <h2>Welcome, {user.name}</h2>
+        <p>Role: {user.role}</p>
+      </main>
     </div>
   );
 }

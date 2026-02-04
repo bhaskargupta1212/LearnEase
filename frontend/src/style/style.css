@@ -1891,3 +1891,106 @@ section,
 .contact .php-email-form button[type=submit]:hover {
   background: color-mix(in srgb, var(--accent-color), transparent 20%);
 } 
+
+
+/****************************************
+Dashboard CSS
+****************************************/
+/* Layout */
+.dashboard-layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 260px;
+  background: var(--nav-color);
+  color: #fff;
+  padding: 20px;
+}
+
+.sidebar .nav-link {
+  color: #fff;
+  padding: 10px;
+  border-radius: 6px;
+  margin-bottom: 6px;
+}
+
+.sidebar .nav-link:hover,
+.sidebar .nav-link.active {
+  background: var(--nav-hover-color);
+  color: #000;
+}
+
+/* Content */
+.dashboard-content {
+  flex: 1;
+  padding: 30px;
+  background: #f8f9fa;
+}
+
+/* Footer */
+.sidebar-footer {
+  margin-top: auto;
+}
+
+.sidebar-footer button {
+  width: 100%;
+  background: #dc3545; /* Bootstrap danger red */
+  color: #fff;
+  border: none;
+  padding: 10px;
+  border-radius: 6px;
+}
+
+.sidebar-footer button:hover {
+  background: #bb2d3b;
+}
+/* Menu Button */
+.menu-btn {
+  display: none;
+  position: fixed;
+  top: 15px;
+  left: 15px;
+  z-index: 1100;
+  background: var(--nav-color);
+  color: #fff;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 22px;
+}
+
+/* Sidebar Base */
+.sidebar {
+  width: 260px;
+  background: var(--nav-color);
+  color: #fff;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Mobile Sidebar */
+@media (max-width: 992px) {
+  .menu-btn {
+    display: block;
+  }
+  .dashboard-content{
+    padding: 80px 30px 30px;
+  }
+  .sidebar {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100vh;
+    transform: translateX(-100%);
+    transition: 0.3s ease;
+    z-index: 1050;
+  }
+
+  .sidebar.open {
+    transform: translateX(0);
+  }
+}
