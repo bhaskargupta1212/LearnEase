@@ -47,7 +47,7 @@ export default function Trainers() {
   ];
 
   return (
-    <section id="trainers-index" className="section trainers-index py-5">
+    <section id="trainers-index" className="section trainers-index py-5" data-testid="trainers-section" >
       <div className="container">
         <div className="row">
           {trainers.map((trainer, index) => (

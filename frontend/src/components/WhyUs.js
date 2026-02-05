@@ -4,7 +4,7 @@ import Link from "next/link";
 
 export default function WhyUs() {
   return (
-    <section id="why-us" className="section why-us">
+    <section id="why-us" className="section why-us" data-testid="why-us-section">
       <div className="container">
         <div className="row gy-4">
 

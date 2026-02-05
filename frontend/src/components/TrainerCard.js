@@ -19,16 +19,16 @@ export default function TrainerCard({
 
           <div className="social d-flex justify-content-center gap-3">
             {socials.twitter && (
-              <a href={socials.twitter}><i className="bi bi-twitter-x"></i></a>
+              <a href={socials.twitter} aria-label="Twitter"><i className="bi bi-twitter-x"></i></a>
             )}
             {socials.facebook && (
-              <a href={socials.facebook}><i className="bi bi-facebook"></i></a>
+              <a href={socials.facebook} aria-label="Facebook"><i className="bi bi-facebook"></i></a>
             )}
             {socials.instagram && (
-              <a href={socials.instagram}><i className="bi bi-instagram"></i></a>
+              <a href={socials.instagram} aria-label="Instagram"><i className="bi bi-instagram"></i></a>
             )}
             {socials.linkedin && (
-              <a href={socials.linkedin}><i className="bi bi-linkedin"></i></a>
+              <a href={socials.linkedin} aria-label="LinkedIn"><i className="bi bi-linkedin"></i></a>
             )}
           </div>
         </div>
