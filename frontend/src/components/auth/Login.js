@@ -92,6 +92,7 @@ export default function Login() {
       <form onSubmit={handleSubmit}>
         <div className="form-floating mb-3">
           <input
+            id="email"
             type="email"
             name="email"
             className="form-control"
@@ -99,11 +100,12 @@ export default function Login() {
             onChange={handleChange}
             required
           />
-          <label>Email address</label>
+          <label htmlFor="email">Email address</label>
         </div>
 
         <div className="form-floating mb-3">
           <input
+            id="password"
             type="password"
             name="password"
             className="form-control"
@@ -111,13 +113,13 @@ export default function Login() {
             onChange={handleChange}
             required
           />
-          <label>Password</label>
+          <label htmlFor="password">Password</label>
         </div>
 
         <div className="d-flex justify-content-between mb-3">
           <div className="form-check">
-            <input className="form-check-input" type="checkbox" />
-            <label className="form-check-label">Remember me</label>
+            <input className="form-check-input" type="checkbox" id="rememberme"/>
+            <label className="form-check-label" htmlFor="rememberme">Remember me</label>
           </div>
 
           <Link href="/forgot-password" className="fw-bold">

@@ -34,6 +34,7 @@ export default function ForgotPassword() {
       <form onSubmit={handleSubmit}>
         <div className="form-floating mb-3">
           <input
+            id="email"
             type="email"
             className="form-control"
             placeholder="Email"
@@ -41,7 +42,7 @@ export default function ForgotPassword() {
             onChange={(e) => setEmail(e.target.value)}
             required
           />
-          <label>Email address</label>
+          <label htmlFor="email">Email address</label>
         </div>
 
         {msg && <p className="text-center text-success">{msg}</p>}

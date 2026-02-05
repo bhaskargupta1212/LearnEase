@@ -104,6 +104,7 @@ export default function Signup() {
         {/* First Name */}
         <div className="form-floating mb-3">
           <input
+            id="firstName"
             type="text"
             name="firstName"
             className="form-control"
@@ -111,12 +112,13 @@ export default function Signup() {
             onChange={handleChange}
             required
           />
-          <label>First Name</label>
+          <label htmlFor="firstName">First Name</label>
         </div>
 
         {/* Last Name */}
         <div className="form-floating mb-3">
           <input
+            id="lastName"
             type="text"
             name="lastName"
             className="form-control"
@@ -124,7 +126,7 @@ export default function Signup() {
             onChange={handleChange}
             required
           />
-          <label>Last Name</label>
+          <label htmlFor="lastName">Last Name</label>
         </div>
 
         {/* Role */}
@@ -134,6 +136,7 @@ export default function Signup() {
             {["student", "trainer", "admin"].map((role) => (
               <div className="form-check" key={role}>
                 <input
+                  id={`role-${role}`}
                   className="form-check-input"
                   type="radio"
                   name="role"
@@ -141,17 +144,19 @@ export default function Signup() {
                   checked={form.role === role}
                   onChange={handleChange}
                 />
-                <label className="form-check-label text-capitalize">
+                <label className="form-check-label text-capitalize"  htmlFor={`role-${role}`}>
                   {role}
                 </label>
               </div>
             ))}
           </div>
         </div>
+        
 
         {/* Email */}
         <div className="form-floating mb-3">
           <input
+            id="email"
             type="email"
             name="email"
             className="form-control"
@@ -159,12 +164,13 @@ export default function Signup() {
             onChange={handleChange}
             required
           />
-          <label>Email address</label>
+          <label htmlFor="email">Email address</label>
         </div>
 
         {/* Password */}
         <div className="form-floating mb-3">
           <input
+            id="password"
             type="password"
             name="password"
             className="form-control"
@@ -172,12 +178,13 @@ export default function Signup() {
             onChange={handleChange}
             required
           />
-          <label>Password</label>
+          <label htmlFor="password">Password</label>
         </div>
 
         {/* Confirm Password */}
         <div className="form-floating mb-3">
           <input
+            id="confirmPassword"
             type="password"
             name="confirmPassword"
             className="form-control"
@@ -185,12 +192,13 @@ export default function Signup() {
             onChange={handleChange}
             required
           />
-          <label>Confirm Password</label>
+          <label htmlFor="confirmPassword">Confirm Password</label>
         </div>
 
         {/* Terms */}
         <div className="form-check mb-3">
           <input
+            id="agree"
             className="form-check-input"
             type="checkbox"
             name="agree"
@@ -198,7 +206,7 @@ export default function Signup() {
             onChange={handleChange}
             required
           />
-          <label className="form-check-label ms-2">
+          <label htmlFor="agree" className="form-check-label ms-2">
             I agree to <Link href="#">Terms & Conditions</Link>
           </label>
         </div>
