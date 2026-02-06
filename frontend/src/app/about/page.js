@@ -18,7 +18,7 @@ export default function AboutPage() {
       />
 
     {/* About Section */}
-    <section className="section trainers-index py-5">
+    <section className="section trainers-index py-5" data-testid="trainers-section">
         <div className="container">
             <div className="row">
                 <About />

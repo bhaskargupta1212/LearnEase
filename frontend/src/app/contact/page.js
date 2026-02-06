@@ -20,7 +20,7 @@ export default function CoursesPage() {
 
 
         {/* Courses Section */}
-        <section className="section trainers-index py-5">
+        <section className="section trainers-index py-5" data-testid="Contact Component">
             <div className="container">
                 <div className="row">
                     <Contact />

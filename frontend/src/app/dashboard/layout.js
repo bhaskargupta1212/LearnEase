@@ -31,7 +31,7 @@ export default function DashboardLayout({ children }) {
 
   return (
     <DashboardContext.Provider value={{ user }}>
-      <div className="dashboard-layout">
+      <div className="dashboard-layout" data-testid="sidebar">
         <Sidebar user={user} />
         <main className="dashboard-content">
           {children}
