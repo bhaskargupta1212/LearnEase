@@ -7,3 +7,6 @@ exports.generateToken = (user) => {
     { expiresIn: "7d" }
   );
 };
+exports.verifyToken = (token) => {
+  return jwt.verify(token, process.env.JWT_SECRET);
+};
