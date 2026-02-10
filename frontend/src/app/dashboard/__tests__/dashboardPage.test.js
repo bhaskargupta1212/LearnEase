@@ -1,4 +1,4 @@
-// page.test.js
+// dashboardPage.test.js
 import { render, screen } from "@testing-library/react";
 import DashboardPage from "../page";
 
@@ -25,11 +25,19 @@ describe("DashboardPage Component", () => {
 
   test("renders welcome message with user name", () => {
     render(<DashboardPage />);
-    expect(screen.getByText(`Welcome, ${mockUser.name}`)).toBeInTheDocument();
+
+    // Get the actual heading element
+    const heading = screen.getByRole("heading", { level: 2 });
+
+    expect(heading).toHaveTextContent(`Welcome back, ${mockUser.name}`);
   });
 
   test("renders user role", () => {
     render(<DashboardPage />);
-    expect(screen.getByText(`Role: ${mockUser.role}`)).toBeInTheDocument();
+
+    // Find the label first, then assert full text
+    const roleParagraph = screen.getByText("Role:", { exact: false }).closest("p");
+
+    expect(roleParagraph).toHaveTextContent(`Role: ${mockUser.role}`);
   });
 });

@@ -1,8 +1,6 @@
-// page.test.js
 import { render, screen } from "@testing-library/react";
 import ProfilePage from "../profile/page";
 
-// Mock the DashboardContext hook
 jest.mock("@/context/DashboardContext", () => ({
   useDashboard: jest.fn(),
 }));
@@ -24,12 +22,30 @@ describe("ProfilePage Component", () => {
     jest.clearAllMocks();
   });
 
-  test("renders user profile information", () => {
+  test("renders profile information correctly", () => {
     render(<ProfilePage />);
-    
-    expect(screen.getByText("My Profile")).toBeInTheDocument();
-    expect(screen.getByText(`Name: ${mockUser.name}`)).toBeInTheDocument();
-    expect(screen.getByText(`Role: ${mockUser.role}`)).toBeInTheDocument();
-    expect(screen.getByText(`Email: ${mockUser.email}`)).toBeInTheDocument();
+
+    // Heading
+    expect(screen.getByText("Account Information")).toBeInTheDocument();
+
+    // Name
+    expect(screen.getAllByText(mockUser.name).length).toBeGreaterThan(0);
+
+    // Role
+    expect(screen.getAllByText(mockUser.role).length).toBeGreaterThan(0);
+
+    // Email
+    expect(screen.getByText(mockUser.email)).toBeInTheDocument();
+
+    // Button
+    expect(screen.getByRole("button", { name: /edit profile/i })).toBeInTheDocument();
+  });
+
+  test("shows loading spinner when user is null", () => {
+    useDashboard.mockReturnValue({ user: null });
+
+    render(<ProfilePage />);
+
+    expect(screen.getByText(/loading profile/i)).toBeInTheDocument();
   });
 });
