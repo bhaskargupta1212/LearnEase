@@ -5,12 +5,10 @@ import { usePathname } from "next/navigation";
 
 /* -------------------- MOCKS -------------------- */
 
-// Mock logout util
 jest.mock("@/utils/auth", () => ({
   logout: jest.fn(),
 }));
 
-// Mock next/navigation
 jest.mock("next/navigation", () => ({
   usePathname: jest.fn(),
 }));
@@ -23,7 +21,6 @@ jest.mock("next/link", () => ({
     </a>
   ),
 }));
-
 
 /* -------------------- TESTS -------------------- */
 
@@ -67,10 +64,9 @@ describe("Sidebar Component", () => {
     render(<Sidebar user={{ name: "No Role" }} />);
 
     expect(
-        screen.getByRole("heading", { name: "Dashboard" })
+      screen.getByRole("heading", { name: "Dashboard" })
     ).toBeInTheDocument();
-    });
-
+  });
 
   test("toggles sidebar open and close when menu button is clicked", () => {
     usePathname.mockReturnValue("/dashboard");
@@ -79,15 +75,12 @@ describe("Sidebar Component", () => {
 
     const toggleButton = container.querySelector(".menu-btn");
 
-    // Open sidebar
     fireEvent.click(toggleButton);
     expect(container.querySelector(".sidebar")).toHaveClass("open");
 
-    // Close sidebar
     fireEvent.click(toggleButton);
     expect(container.querySelector(".sidebar")).not.toHaveClass("open");
-    });
-
+  });
 
   test("adds active class to current route link", () => {
     usePathname.mockReturnValue("/dashboard/profile");
@@ -110,11 +103,11 @@ describe("Sidebar Component", () => {
     fireEvent.click(toggleButton);
     expect(sidebar).toHaveClass("open");
 
-    // Click navigation link
-    fireEvent.click(screen.getByText("Courses"));
-    expect(sidebar).not.toHaveClass("open");
-    });
+    // Click correct link name
+    fireEvent.click(screen.getByText("Explore All Courses"));
 
+    expect(sidebar).not.toHaveClass("open");
+  });
 
   test("renders user name", () => {
     usePathname.mockReturnValue("/dashboard");
@@ -132,5 +125,21 @@ describe("Sidebar Component", () => {
     fireEvent.click(screen.getByText("Logout"));
 
     expect(logout).toHaveBeenCalledTimes(1);
+  });
+
+  test("renders student-only link", () => {
+    usePathname.mockReturnValue("/dashboard");
+
+    render(<Sidebar user={mockUser} />);
+
+    expect(screen.getByText("My Enrolled Courses")).toBeInTheDocument();
+  });
+
+  test("renders admin-only link", () => {
+    usePathname.mockReturnValue("/dashboard");
+
+    render(<Sidebar user={{ ...mockUser, role: "admin" }} />);
+
+    expect(screen.getByText("Add Course")).toBeInTheDocument();
   });
 });

@@ -1,6 +1,8 @@
 import React from "react";
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import Courses from "../courses";
+
+global.fetch = jest.fn();
 
 // Mock next/image
 jest.mock("next/image", () => ({
@@ -18,66 +20,149 @@ jest.mock("next/link", () => ({
     React.createElement("a", { href }, children),
 }));
 
+jest.mock("next/navigation", () => ({
+  useRouter: () => ({
+    push: jest.fn(),
+    refresh: jest.fn(),
+    replace: jest.fn(),
+    prefetch: jest.fn(),
+  }),
+}));
+
+
+beforeEach(() => {
+  jest.clearAllMocks();
+  localStorage.clear();
+
+  fetch.mockImplementation((url) => {
+  if (url.includes("/courses") && !url.includes("my-courses")) {
+    return Promise.resolve({
+      ok: true,
+      json: async () => [
+        {
+          id: 1,
+          title: "Full Stack Web Development (MERN Stack)",
+          category: "Web Development",
+          price: 4999.0,
+          description: "Learn MERN stack",
+          thumbnail: "https://i.postimg.cc/7ZCNTrP8/course-1.jpg",
+        },
+        {
+          id: 2,
+          title: "AI & Machine Learning Fundamental",
+          category: "Artificial Intelligence",
+          price: 2499.0,
+          description: "AI course",
+          thumbnail:
+            "https://images.unsplash.com/photo-1507146153580-69a1fe6d8aa1",
+        },
+        {
+          id: 3,
+          title: "Python Programming Masterclass",
+          category: "Programming",
+          price: 1499.0,
+          description: "Python course",
+          thumbnail:
+            "https://images.unsplash.com/photo-1515879218367-8466d910aaa4",
+        },
+      ],
+    });
+  }
+
+  if (url.includes("my-courses")) {
+    return Promise.resolve({
+      ok: true,
+      json: async () => [],
+    });
+  }
+
+  return Promise.resolve({
+    ok: true,
+    json: async () => [],
+  });
+});
+
+});
+
 
 describe("Courses Component", () => {
 
-  test("renders courses section title", () => {
-    render(<Courses />);
+  test("renders courses section title", async () => {
+  render(<Courses />);
 
-    expect(screen.getByText("Courses")).toBeInTheDocument();
-    expect(screen.getByText("Popular Courses")).toBeInTheDocument();
-  });
+  await waitFor(() =>
+    expect(screen.getByText("Courses")).toBeInTheDocument()
+  );
 
-  test("renders all course titles", () => {
-    render(<Courses />);
+  expect(screen.getByText("Popular Courses")).toBeInTheDocument();
+});
 
-    expect(screen.getByText("Full Stack Web Development")).toBeInTheDocument();
-    expect(screen.getByText("SEO & Digital Marketing")).toBeInTheDocument();
-    expect(screen.getByText("Professional Copywriting")).toBeInTheDocument();
-  });
 
-  test("renders categories and prices", () => {
-    render(<Courses />);
 
-    expect(screen.getByText("Web Development")).toBeInTheDocument();
-    expect(screen.getByText("Digital Marketing")).toBeInTheDocument();
-    expect(screen.getByText("Content Writing")).toBeInTheDocument();
+  test("renders all course titles", async () => {
+  render(<Courses />);
 
-    expect(screen.getByText("₹1,999")).toBeInTheDocument();
-    expect(screen.getByText("₹2,499")).toBeInTheDocument();
-    expect(screen.getByText("₹1,799")).toBeInTheDocument();
-  });
+  await waitFor(() =>
+    expect(
+      screen.getByText("Full Stack Web Development (MERN Stack)")
+    ).toBeInTheDocument()
+  );
 
-  test("renders trainer names", () => {
-    render(<Courses />);
+  expect(
+    screen.getByText("AI & Machine Learning Fundamental")
+  ).toBeInTheDocument();
 
-    expect(screen.getByText("Antonio")).toBeInTheDocument();
-    expect(screen.getByText("Lana")).toBeInTheDocument();
-    expect(screen.getByText("Brandon")).toBeInTheDocument();
-  });
+  expect(
+    screen.getByText("Python Programming Masterclass")
+  ).toBeInTheDocument();
+});
 
-  test("renders course images", () => {
-    render(<Courses />);
 
-    expect(screen.getByAltText("Full Stack Web Development")).toBeInTheDocument();
-    expect(screen.getByAltText("SEO & Digital Marketing")).toBeInTheDocument();
-    expect(screen.getByAltText("Professional Copywriting")).toBeInTheDocument();
-  });
 
-  test("course links point to details page", () => {
-    render(<Courses />);
+  test("renders categories and prices", async () => {
+  render(<Courses />);
 
-    const links = screen.getAllByRole("link");
-    links.forEach(link => {
-      expect(link).toHaveAttribute("href", "/courses/details");
-    });
-  });
+  await waitFor(() =>
+    expect(screen.getByText("Web Development")).toBeInTheDocument()
+  );
 
-  test("renders correct number of courses", () => {
-    render(<Courses />);
+  expect(screen.getByText("Artificial Intelligence")).toBeInTheDocument();
+  expect(screen.getByText("Programming")).toBeInTheDocument();
 
-    const titles = screen.getAllByRole("link");
-    expect(titles.length).toBe(3);
-  });
+  expect(screen.getByText("₹4999")).toBeInTheDocument();
+  expect(screen.getByText("₹2499")).toBeInTheDocument();
+  expect(screen.getByText("₹1499")).toBeInTheDocument();
+}); 
+
+  test("renders course images", async () => {
+  render(<Courses />);
+
+  await waitFor(() =>
+    expect(
+      screen.getByAltText("Full Stack Web Development (MERN Stack)")
+    ).toBeInTheDocument()
+  );
+});
+
+
+  test("course links point to correct details page", async () => {
+  render(<Courses />);
+
+  const links = await screen.findAllByRole("link");
+
+  expect(links[0]).toHaveAttribute("href", "/courses/1");
+  expect(links[1]).toHaveAttribute("href", "/courses/2");
+  expect(links[2]).toHaveAttribute("href", "/courses/3");
+});
+
+
+  test("renders correct number of courses", async () => {
+  render(<Courses />);
+
+  await waitFor(() =>
+    expect(screen.getAllByRole("link").length).toBe(3)
+  );
+});
+
 
 });
