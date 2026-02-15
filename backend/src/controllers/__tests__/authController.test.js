@@ -265,6 +265,20 @@ test("login DB error → 500", (done) => {
 
   authController.login(req, res);
 });
+test("forgot password DB error → 500", () => {
+  pool.query.mockImplementation((sql, params, cb) => {
+    cb(new Error("DB fail"));
+  });
+
+  const req = { body: { email: "a@test.com" } };
+  const res = mockRes();
+
+  authController.forgotPassword(req, res);
+
+  expect(res.status).toHaveBeenCalledWith(500);
+  expect(res.json).toHaveBeenCalledWith({ message: "DB error" });
+});
+
 
 
 

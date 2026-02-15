@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/12</span>
+                <span class='fraction'>12/12</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/12</span>
+                <span class='fraction'>12/12</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -93,66 +93,66 @@
 <a name='L28'></a><a href='#L28'>28</a>
 <a name='L29'></a><a href='#L29'>29</a>
 <a name='L30'></a><a href='#L30'>30</a>
-<a name='L31'></a><a href='#L31'>31</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<a name='L31'></a><a href='#L31'>31</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">const router = <span class="cstat-no" title="statement not covered" >require("express").Router();</span>
-const auth = <span class="cstat-no" title="statement not covered" >require("../middleware/auth.middleware");</span>
-const role = <span class="cstat-no" title="statement not covered" >require("../middleware/role.middleware");</span>
-const ctrl = <span class="cstat-no" title="statement not covered" >require("../controllers/course.controller");</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">const router = require("express").Router();
+const auth = require("../middleware/auth.middleware");
+const role = require("../middleware/role.middleware");
+const ctrl = require("../controllers/course.controller");
 &nbsp;
 /* ================= ADMIN ================= */
 &nbsp;
 // create course (admin only)
-<span class="cstat-no" title="statement not covered" >router.post("/", auth, role(["admin"]), ctrl.createCourse);</span>
+router.post("/", auth, role(["admin"]), ctrl.createCourse);
 &nbsp;
 // update
-<span class="cstat-no" title="statement not covered" >router.put("/:id", auth, role(["admin"]), ctrl.updateCourse);</span>
+router.put("/:id", auth, role(["admin"]), ctrl.updateCourse);
 &nbsp;
 // delete
-<span class="cstat-no" title="statement not covered" >router.delete("/:id", auth, role(["admin"]), ctrl.deleteCourse);</span>
+router.delete("/:id", auth, role(["admin"]), ctrl.deleteCourse);
 &nbsp;
 &nbsp;
 /* ================= PUBLIC ================= */
 &nbsp;
-<span class="cstat-no" title="statement not covered" >router.get("/", ctrl.getCourses);</span>
+router.get("/", ctrl.getCourses);
 &nbsp;
 /* ================= STUDENT ================= */
-<span class="cstat-no" title="statement not covered" >router.get("/my-courses", auth, ctrl.myCourses);</span>
-<span class="cstat-no" title="statement not covered" >router.post("/enroll/:id", auth, ctrl.enrollCourse);</span>
+router.get("/my-courses", auth, ctrl.myCourses);
+router.post("/enroll/:id", auth, ctrl.enrollCourse);
 &nbsp;
-<span class="cstat-no" title="statement not covered" >router.get("/:id", ctrl.getCourse);</span>
+router.get("/:id", ctrl.getCourse);
 &nbsp;
 &nbsp;
 &nbsp;
-<span class="cstat-no" title="statement not covered" >module.exports = router;</span>
+module.exports = router;
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -160,7 +160,7 @@ const ctrl = <span class="cstat-no" title="statement not covered" >require("../c
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-02-15T05:52:59.724Z
+                at 2026-02-15T06:14:52.029Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

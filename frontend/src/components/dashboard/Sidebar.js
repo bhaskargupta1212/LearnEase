@@ -45,11 +45,12 @@ export default function Sidebar({ user }) {
               My Profile
             </Link>
           </li>
-          <li>
+          {user.role === "student" && <li>
             <Link href="/dashboard/my-courses" className={isActive("/dashboard/my-courses")} onClick={closeSidebar}>
               My Enrolled Courses
             </Link>
-          </li>
+          </li>}
+          
 
           <li>
             <Link href="/dashboard/courses" className={isActive("/dashboard/courses")} onClick={closeSidebar}>
