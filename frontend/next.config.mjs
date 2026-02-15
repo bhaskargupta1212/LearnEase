@@ -2,7 +2,7 @@
 const nextConfig = {
   /* config options here */
   images: {
-    domains: ["i.postimg.cc"],
+    domains: ["i.postimg.cc", "images.unsplash.com"],
   },
 };
 

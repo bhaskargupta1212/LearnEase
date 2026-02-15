@@ -41,6 +41,8 @@ export default function MyCourses() {
 };
 
 useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) return;
     loadMyCourses();
   }, []);
 

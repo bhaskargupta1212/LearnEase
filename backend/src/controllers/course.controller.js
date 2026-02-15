@@ -54,7 +54,11 @@ exports.enrollCourse = (req, res) => {
 };
 
 exports.myCourses = (req, res) => {
-  const userId = req.user.id;
+  if (!req.user) {
+    return res.status(401).json({ message: "Unauthorized" });
+  }
+
+  const userId = req.user.id || req.user.userId;
 
   if (!userId) {
     return res.status(401).json({ message: "Invalid token" });
@@ -62,11 +66,12 @@ exports.myCourses = (req, res) => {
 
   Course.getUserCourses(userId, (err, results) => {
     if (err) {
-      console.error("DB ERROR:", err);
+      console.error(err);
       return res.status(500).json({ message: "Server error" });
     }
 
     return res.json(results);
   });
 };
+
 

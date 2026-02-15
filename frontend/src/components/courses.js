@@ -26,48 +26,48 @@ export default function Courses() {
   /* ---------------- Load My Enrollments ---------------- */
 
   const loadEnrollments = async () => {
-  const token = localStorage.getItem("token");
-  if (!token) return;
+    const token = localStorage.getItem("token");
+    if (!token) {
+      setEnrolledCourses([]);
+      return;
+    }
 
-  try {
-    const res = await fetch(
-      "http://localhost:5000/api/enrollments/my-courses",
-      { headers: { Authorization: `Bearer ${token}` } }
-    );
+    try {
+      const res = await fetch(
+        "http://localhost:5000/api/courses/my-courses", // ✅ FIXED ROUTE
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
 
-    const data = await res.json();
-
-    // 🔥 handle all possible backend formats
-    let ids = [];
-
-    if (Array.isArray(data)) {
-      // case: [ {course_id:1}, {course_id:2} ]
-      if (data.length && typeof data[0] === "object") {
-        ids = data.map(e => e.course_id || e.id);
-      } 
-      // case: [1,2,3]
-      else {
-        ids = data;
+      if (!res.ok) {
+        setEnrolledCourses([]);
+        return;
       }
+
+      const data = await res.json();
+
+      // extract ids safely
+      const ids = Array.isArray(data)
+        ? data.map((e) => e.course_id || e.id)
+        : [];
+
+      setEnrolledCourses(ids);
+    } catch (err) {
+      console.log("Enrollment load error", err);
+      setEnrolledCourses([]);
     }
+  };
 
-    // case: {data:[...]}
-    if (data?.data) {
-      ids = data.data.map(e => e.course_id || e.id);
-    }
+  useEffect(() => {
+    const init = async () => {
+      await loadCourses();
+      await loadEnrollments();
+    };
 
-    setEnrolledCourses(ids);
-
-  } catch (err) {
-    console.log("Enrollment load error", err);
-    setEnrolledCourses([]);
-  }
-};
-
-
-   useEffect(() => {
-    loadCourses();
-    loadEnrollments();
+    init();
   }, []);
 
   if (loading) {
@@ -130,7 +130,7 @@ function CourseCard({ course, delay, isEnrolled }) {
         {
           method: "POST",
           headers: { Authorization: `Bearer ${token}` },
-        }
+        },
       );
 
       const data = await res.json();
@@ -184,8 +184,9 @@ function CourseCard({ course, delay, isEnrolled }) {
 
           {isEnrolled ? (
             <div className="text-center mt-2">
-              <span className="badge bg-success px-3 py-2 rounded-pill">
-                ✔ Enrolled
+              <span className="badge bg-success px-3 py-2 rounded-pill d-inline-flex align-items-center gap-2">
+                <i className="bi bi-check-circle-fill"></i>
+                Enrolled
               </span>
             </div>
           ) : (
