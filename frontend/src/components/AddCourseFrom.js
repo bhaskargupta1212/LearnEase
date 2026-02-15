@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 
 export default function AddCourseForm() {
@@ -96,13 +96,27 @@ export default function AddCourseForm() {
     setLoading(false);
   };
 
+  // Auto hide success/error message after 5 seconds
+useEffect(() => {
+  if (msg || error) {
+    const timer = setTimeout(() => {
+      setMsg(null);
+      setError(null);
+    }, 5000);
+
+    return () => clearTimeout(timer);
+  }
+}, [msg, error]);
+
+
   return (
     <div className="container py-4" style={{ maxWidth: 800 }}>
 
       <h3 className="mb-4">Upload New Course</h3>
 
-      {msg && <div className="alert alert-success">{msg}</div>}
-      {error && <div className="alert alert-danger">{error}</div>}
+      {msg && <div className="alert alert-success fade show">{msg}</div>}
+      {error && <div className="alert alert-danger fade show">{error}</div>}
+
 
       <form className="card shadow p-4" onSubmit={submit}>
 
