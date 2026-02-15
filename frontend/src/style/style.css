@@ -307,6 +307,10 @@ h6 {
   border-radius: 50px;
   transition: 0.3s;
 }
+.btn-badge{
+  color: var(--contrast-color);
+  background: var(--accent-color);
+}
 /*--------------------------------------------------------------
 # Navigation Menu
 --------------------------------------------------------------*/

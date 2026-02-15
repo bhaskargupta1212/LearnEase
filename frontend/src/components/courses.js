@@ -7,17 +7,67 @@ import { useRouter } from "next/navigation";
 
 export default function Courses() {
   const [courses, setCourses] = useState([]);
+  const [enrolledCourses, setEnrolledCourses] = useState([]);
   const [loading, setLoading] = useState(true);
-  const router = useRouter();
 
-  useEffect(() => {
-    fetch("http://localhost:5000/api/courses")
-      .then((res) => res.json())
-      .then((data) => {
-        setCourses(data || []);
-        setLoading(false);
-      })
-      .catch(() => setLoading(false));
+  /* ---------------- Load All Courses ---------------- */
+
+  const loadCourses = async () => {
+    try {
+      const res = await fetch("http://localhost:5000/api/courses");
+      const data = await res.json();
+      setCourses(data || []);
+    } catch {
+      setCourses([]);
+    }
+    setLoading(false);
+  };
+
+  /* ---------------- Load My Enrollments ---------------- */
+
+  const loadEnrollments = async () => {
+  const token = localStorage.getItem("token");
+  if (!token) return;
+
+  try {
+    const res = await fetch(
+      "http://localhost:5000/api/enrollments/my-courses",
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
+
+    const data = await res.json();
+
+    // 🔥 handle all possible backend formats
+    let ids = [];
+
+    if (Array.isArray(data)) {
+      // case: [ {course_id:1}, {course_id:2} ]
+      if (data.length && typeof data[0] === "object") {
+        ids = data.map(e => e.course_id || e.id);
+      } 
+      // case: [1,2,3]
+      else {
+        ids = data;
+      }
+    }
+
+    // case: {data:[...]}
+    if (data?.data) {
+      ids = data.data.map(e => e.course_id || e.id);
+    }
+
+    setEnrolledCourses(ids);
+
+  } catch (err) {
+    console.log("Enrollment load error", err);
+    setEnrolledCourses([]);
+  }
+};
+
+
+   useEffect(() => {
+    loadCourses();
+    loadEnrollments();
   }, []);
 
   if (loading) {
@@ -48,7 +98,12 @@ export default function Courses() {
       <div className="container">
         <div className="row">
           {courses.map((course, i) => (
-            <CourseCard key={course.id} course={course} delay={(i + 1) * 100} />
+            <CourseCard
+              key={course.id}
+              course={course}
+              delay={(i + 1) * 100}
+              isEnrolled={enrolledCourses.includes(course.id)}
+            />
           ))}
         </div>
       </div>
@@ -56,9 +111,9 @@ export default function Courses() {
   );
 }
 
-/* ---------------- Course Card ---------------- */
+/* ================= Course Card ================= */
 
-function CourseCard({ course, delay }) {
+function CourseCard({ course, delay, isEnrolled }) {
   const router = useRouter();
 
   const enrollCourse = async () => {
@@ -71,12 +126,10 @@ function CourseCard({ course, delay }) {
 
     try {
       const res = await fetch(
-        `http://localhost:5000/api/enroll/${course.id}`,
+        `http://localhost:5000/api/courses/enroll/${course.id}`,
         {
           method: "POST",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          headers: { Authorization: `Bearer ${token}` },
         }
       );
 
@@ -84,7 +137,7 @@ function CourseCard({ course, delay }) {
 
       if (res.ok) {
         alert("Enrollment successful 🎉");
-        router.push("/dashboard/my-courses");
+        window.location.reload(); // refresh UI
       } else {
         alert(data.message || "Already enrolled");
       }
@@ -110,12 +163,15 @@ function CourseCard({ course, delay }) {
 
         <div className="course-content p-3">
           <div className="d-flex justify-content-between align-items-center mb-2">
-            <span className="badge bg-primary">{course.category}</span>
+            <span className="badge btn-badge">{course.category}</span>
             <span className="fw-bold text-success">₹{course.price}</span>
           </div>
 
           <h4 className="mb-2">
-            <Link href={`/courses/${course.id}`} className="text-dark text-decoration-none">
+            <Link
+              href={`/courses/${course.id}`}
+              className="text-dark text-decoration-none"
+            >
               {course.title}
             </Link>
           </h4>
@@ -124,12 +180,22 @@ function CourseCard({ course, delay }) {
             {course.description?.slice(0, 100)}...
           </p>
 
-          <button
-            onClick={enrollCourse}
-            className="btn btn-primary w-100 mt-2 rounded-pill"
-          >
-            Enroll Now
-          </button>
+          {/* ---------- ENROLL STATUS ---------- */}
+
+          {isEnrolled ? (
+            <div className="text-center mt-2">
+              <span className="badge bg-success px-3 py-2 rounded-pill">
+                ✔ Enrolled
+              </span>
+            </div>
+          ) : (
+            <button
+              onClick={enrollCourse}
+              className="btn btn-login w-100 mt-2 rounded-pill"
+            >
+              Enroll Now
+            </button>
+          )}
         </div>
       </div>
     </div>

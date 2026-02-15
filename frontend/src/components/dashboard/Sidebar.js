@@ -45,12 +45,25 @@ export default function Sidebar({ user }) {
               My Profile
             </Link>
           </li>
+          <li>
+            <Link href="/dashboard/my-courses" className={isActive("/dashboard/my-courses")} onClick={closeSidebar}>
+              My Enrolled Courses
+            </Link>
+          </li>
 
           <li>
             <Link href="/dashboard/courses" className={isActive("/dashboard/courses")} onClick={closeSidebar}>
-              Courses
+              Explore All Courses
             </Link>
           </li>
+
+           {user.role === "admin" && (
+            <li>
+              <Link href="/dashboard/add-course" className={isActive("/dashboard/add-course")} onClick={closeSidebar}>
+                Add Course
+              </Link>
+            </li>
+          )}
         </ul>
 
         <div className="sidebar-footer">

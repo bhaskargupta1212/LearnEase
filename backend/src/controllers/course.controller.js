@@ -19,11 +19,12 @@ exports.createCourse = (req, res) => {
   if (req.user.role !== "admin")
     return res.status(403).json({ message: "Admin only" });
 
-  Course.create({ ...req.body, created_by: req.user.id }, (err) => {
+  Course.create({ ...req.body, created_by: req.user.id || req.user.userId }, (err) => {
     if (err) return res.status(500).json({ message: "Create failed" });
     res.json({ success: true });
   });
 };
+
 
 exports.updateCourse = (req, res) => {
   if (req.user.role !== "admin")
@@ -53,8 +54,19 @@ exports.enrollCourse = (req, res) => {
 };
 
 exports.myCourses = (req, res) => {
-  Course.getUserCourses(req.user.id, (err, results) => {
-    if (err) return res.status(500).json({ message: "DB error" });
-    res.json(results);
+  const userId = req.user.id;
+
+  if (!userId) {
+    return res.status(401).json({ message: "Invalid token" });
+  }
+
+  Course.getUserCourses(userId, (err, results) => {
+    if (err) {
+      console.error("DB ERROR:", err);
+      return res.status(500).json({ message: "Server error" });
+    }
+
+    return res.json(results);
   });
 };
+

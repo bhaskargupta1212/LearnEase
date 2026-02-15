@@ -28,4 +28,4 @@ export const authFetch = async (endpoint, options = {}) => {
 export const logout = () => {
   localStorage.clear();
   window.location.href = "/login";
-};
+}; 
